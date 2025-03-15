@@ -9,19 +9,21 @@ export interface BaseComponentProps {
 }
 
 // Component configuration used in sidebar and properties panel
-export type BaseComponentConfig<TProps> = {
+export type BaseComponentConfig<TProps, TCustomOptions> = {
   name: string;
   description?: string;
   component: React.FC<TProps>;
   icon: LucideIcon;
   defaultProps: Required<Partial<TProps>>;
-  properties: Record<string, unknown>;
-  renderPropertiesEditor?: (
+  customOptions: TCustomOptions; // Configuration options that don't affect rendering or used in props but affect code generation
+  renderPropertiesEditor: (
     props: TProps,
     onChange: (props: TProps) => void,
+    customOptions: TCustomOptions,
+    onCustomOptionsChange: (options: TCustomOptions) => void,
   ) => React.ReactNode;
-  generateJSXCode: (component: Component<TProps>) => string;
-  generateSchemaCode: (component: Component<TProps>) => string;
+  generateJSXCode: (component: Component<TProps, TCustomOptions>) => string;
+  generateSchemaCode: (component: Component<TProps, TCustomOptions>) => string;
   generateImportCode: () => string;
 };
 
@@ -29,13 +31,17 @@ export type BaseComponentConfig<TProps> = {
 export interface FormComponentsCategory {
   name: string;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  components: BaseComponentConfig<any>[];
+  components: BaseComponentConfig<any, any>[];
 }
 
-export interface Component<TProps = BaseComponentProps> {
+// Component object used in the store
+export interface Component<
+  TProps = BaseComponentProps,
+  TCustomOptions = Record<string, unknown>,
+> {
   id: string;
   name: string;
   component: React.FC<TProps>;
   props: TProps;
-  config: BaseComponentConfig<TProps>;
+  config: BaseComponentConfig<TProps, TCustomOptions>;
 }

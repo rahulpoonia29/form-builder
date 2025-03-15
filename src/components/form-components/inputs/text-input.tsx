@@ -1,4 +1,4 @@
-import BaseComponent from '@/components/builder-components/base/baseComponent';
+import BaseComponent from '@/components/form-components/base/baseComponent';
 import { PropertyInput } from '@/components/form-builder/properties';
 import { Input } from '@/components/ui/input';
 import { cn } from '@/lib/utils';
@@ -10,9 +10,12 @@ import {
 import { TextCursorInputIcon } from 'lucide-react';
 
 // Props for text input component
-export interface TextInputProps extends BaseComponentProps {
+interface TextInputProps extends BaseComponentProps {
   placeholder?: string;
 }
+
+// Custom options for text input
+type TextInputCustomOptions = Record<string, unknown>;
 
 // The actual text input component
 export function TextInput({
@@ -46,7 +49,9 @@ const renderPropertiesEditor = (
 };
 
 // Generate Zod schema code for validation
-const generateSchemaCode = (component: Component<TextInputProps>): string => {
+const generateSchemaCode = (
+  component: Component<TextInputProps, TextInputCustomOptions>,
+): string => {
   const { required, label } = component.props;
 
   return required
@@ -85,7 +90,10 @@ const generateImportCode = () => {
 };
 
 // Component configuration
-const textInputConfig: BaseComponentConfig<TextInputProps> = {
+const textInputConfig: BaseComponentConfig<
+  TextInputProps,
+  TextInputCustomOptions
+> = {
   name: 'name',
   description: 'Simple text input field',
   component: TextInput,
@@ -97,7 +105,7 @@ const textInputConfig: BaseComponentConfig<TextInputProps> = {
     placeholder: 'Enter your name',
     className: '',
   },
-  properties: {},
+  customOptions: {},
   renderPropertiesEditor,
   generateSchemaCode,
   generateJSXCode,

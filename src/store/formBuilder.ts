@@ -7,10 +7,14 @@ interface FormBuilderState {
   selectedComponent: string | null;
 
   // Actions
-  addComponent: (type: BaseComponentConfig<unknown>) => void;
+  addComponent: (type: BaseComponentConfig<unknown, unknown>) => void;
   removeComponent: (id: string) => void;
   updateComponentName: (id: string, name: string) => void;
   updateComponentProps: (id: string, props: Partial<unknown>) => void;
+  updateComponentCustomOptions: (
+    id: string,
+    customOptions: Record<string, unknown>,
+  ) => void;
   setSelectedComponent: (id: string | null) => void;
   reorderComponents: (activeId: string, overId: string) => void;
   reset: () => void;
@@ -61,6 +65,30 @@ export const useFormBuilderStore = create<FormBuilderState>((set) => ({
       components: state.components.map((c) =>
         c.id === id ? { ...c, props: { ...c.props, ...props } } : c,
       ),
+    }));
+  },
+
+  // Add this function to your formBuilder store
+  updateComponentCustomOptions: (
+    id: string,
+    customOptions: Record<string, unknown>,
+  ) => {
+    set((state) => ({
+      components: state.components.map((component) => {
+        if (component.id === id) {
+          return {
+            ...component,
+            config: {
+              ...component.config,
+              customOptions: {
+                ...component.config.customOptions,
+                ...customOptions,
+              },
+            },
+          };
+        }
+        return component;
+      }),
     }));
   },
 

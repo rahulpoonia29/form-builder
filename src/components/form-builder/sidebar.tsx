@@ -9,7 +9,7 @@ import { useFormBuilderStore } from '@/store/formBuilder';
 import { BaseComponentConfig } from '@/types/form';
 import { ChevronDown, ChevronRight, PlusCircle } from 'lucide-react';
 import { useState } from 'react';
-import formComponents from '../builder-components';
+import formComponents from '../form-components';
 
 // Component for a collapsible category
 const ComponentCategory = ({
@@ -62,7 +62,7 @@ const ComponentItem = ({
   config,
   onAdd,
 }: {
-  config: BaseComponentConfig<unknown>;
+  config: BaseComponentConfig<unknown, unknown>;
   onAdd: () => void;
 }) => {
   const Icon = config.icon;

@@ -4,7 +4,7 @@ import { Separator } from '@/components/ui/separator';
 import { Switch } from '@/components/ui/switch';
 import { Textarea } from '@/components/ui/textarea';
 import { useFormBuilderStore } from '@/store/formBuilder';
-import formComponents from '../builder-components';
+import formComponents from '../form-components';
 
 // Component property input renderer
 export function PropertyInput({
@@ -58,6 +58,7 @@ export default function PropertiesPanel() {
     selectedComponent,
     updateComponentProps,
     updateComponentName,
+    updateComponentCustomOptions,
   } = useFormBuilderStore();
 
   const selectedComponentData = components.find(
@@ -96,6 +97,10 @@ export default function PropertiesPanel() {
     updateComponentProps(selectedComponentData.id, { [field]: value });
   };
 
+  const updateCustomOptions = (options: Record<string, unknown>) => {
+    updateComponentCustomOptions(selectedComponentData.id, options);
+  };
+
   // List of default properties we handle separately
   const defaultPropertyNames = [
     'label',
@@ -106,15 +111,22 @@ export default function PropertiesPanel() {
   ];
 
   // Get custom properties by filtering out the default ones
-  const customProperties = componentConfig.defaultProps
+  const customProps = componentConfig.defaultProps
     ? Object.keys(componentConfig.defaultProps).filter(
+        (key) => !defaultPropertyNames.includes(key),
+      )
+    : [];
+
+  const customOptions = componentConfig.customOptions
+    ? Object.keys(componentConfig.customOptions).filter(
         (key) => !defaultPropertyNames.includes(key),
       )
     : [];
 
   // Determine if we need to show the custom properties section
   const hasCustomProperties =
-    customProperties.length > 0 || componentConfig.renderPropertiesEditor;
+    customProps.concat(customOptions).length > 0 ||
+    componentConfig.renderPropertiesEditor;
 
   return (
     <div className="h-full overflow-y-auto p-4">
@@ -185,15 +197,16 @@ export default function PropertiesPanel() {
 
             <div className="space-y-4">
               {/* Custom component properties */}
-              {componentConfig.renderPropertiesEditor &&
-                componentConfig.renderPropertiesEditor(
-                  selectedComponentData.props,
-                  (props) =>
-                    updateComponentProps(
-                      selectedComponentData.id,
-                      props as Partial<typeof selectedComponentData.props>,
-                    ),
-                )}
+              {componentConfig.renderPropertiesEditor(
+                selectedComponentData.props,
+                (props) =>
+                  updateComponentProps(
+                    selectedComponentData.id,
+                    props as Partial<typeof selectedComponentData.props>,
+                  ),
+                selectedComponentData.config.customOptions,
+                updateCustomOptions,
+              )}
             </div>
           </>
         )}
