@@ -65,7 +65,7 @@ export function FormBuilder() {
               </SortableContext>
             </ScrollArea>
 
-            <div className="bg-muted/20 w-[450px] border-l">
+            <div className="bg-muted/20 w-[400px]  border-l">
               <div className="flex items-center border-b px-4 py-3">
                 <Sliders size={16} className="mr-2" />
                 <h3 className="font-medium">Properties</h3>

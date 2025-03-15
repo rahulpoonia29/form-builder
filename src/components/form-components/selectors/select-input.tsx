@@ -13,7 +13,9 @@ import {
   BaseComponentProps,
   Component,
 } from '@/types/form';
-import { ChevronDownIcon } from 'lucide-react';
+import { ChevronDownIcon, CircleX } from 'lucide-react';
+import { Input } from '@/components/ui/input';
+import { Button } from '@/components/ui/button';
 
 // Props for select input component
 interface SelectInputProps extends BaseComponentProps {
@@ -32,22 +34,24 @@ export function SelectInput({
   helperText,
   placeholder,
   className,
-}: SelectInputProps) {
-  const customOptions: SelectInputCustomOptions = {
-    options: [
-      { label: 'Option 1', value: 'option1' },
-      { label: 'Option 2', value: 'option2' },
-    ],
-  };
+  customOptions,
+}: SelectInputProps & { customOptions?: SelectInputCustomOptions }) {
+  const options = customOptions?.options || [
+    { label: 'United States', value: 'us' },
+    { label: 'Canada', value: 'ca' },
+    { label: 'United Kingdom', value: 'uk' },
+    { label: 'Australia', value: 'au' },
+    { label: 'Germany', value: 'de' },
+  ];
 
   return (
     <BaseComponent {...{ label, required, helperText }}>
       <Select>
-        <SelectTrigger className={cn(className)}>
-          <SelectValue placeholder={placeholder || 'Select an option'} />
+        <SelectTrigger className={cn('w-full', className)}>
+          <SelectValue placeholder={placeholder || 'Select a country'} />
         </SelectTrigger>
         <SelectContent>
-          {customOptions.options.map((option) => (
+          {options.map((option) => (
             <SelectItem key={option.value} value={option.value}>
               {option.label}
             </SelectItem>
@@ -80,8 +84,7 @@ const renderPropertiesEditor = (
         <div className="space-y-2">
           {customOptions.options.map((option, index) => (
             <div key={index} className="flex gap-2">
-              <input
-                className="border-input flex-1 rounded-md border px-3 py-2 text-sm"
+              <Input
                 value={option.label}
                 placeholder="Label"
                 onChange={(e) => {
@@ -96,8 +99,7 @@ const renderPropertiesEditor = (
                   });
                 }}
               />
-              <input
-                className="border-input flex-1 rounded-md border px-3 py-2 text-sm"
+              <Input
                 value={option.value}
                 placeholder="Value"
                 onChange={(e) => {
@@ -112,9 +114,10 @@ const renderPropertiesEditor = (
                   });
                 }}
               />
-              <button
-                type="button"
-                className="border-input rounded-md border px-3 py-2 text-sm hover:bg-red-100"
+              <Button
+                variant={'outline'}
+                size={'icon'}
+                className='hover:bg-destructive hover:text-primary-foreground cursor-pointer transition-colors'
                 onClick={() => {
                   const newOptions = customOptions.options.filter(
                     (_, i) => i !== index,
@@ -125,8 +128,8 @@ const renderPropertiesEditor = (
                   });
                 }}
               >
-                ✕
-              </button>
+                <CircleX />
+              </Button>
             </div>
           ))}
         </div>
