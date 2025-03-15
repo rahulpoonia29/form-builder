@@ -1,6 +1,7 @@
 import { Button } from '@/components/ui/button';
-import { useFormBuilderStore } from '@/store/formBuilder';
 import { cn } from '@/lib/utils';
+import { useFormBuilderStore } from '@/store/formBuilder';
+import { BaseComponentProps } from '@/types/form';
 import {
   SortableContext,
   useSortable,
@@ -32,7 +33,7 @@ const FormCanvasComponent = ({
   id: string;
   name: string;
   component: React.FC<unknown>;
-  props: Record<string, unknown>;
+  props: BaseComponentProps;
 }) => {
   const { selectedComponent, setSelectedComponent, removeComponent } =
     useFormBuilderStore();

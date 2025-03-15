@@ -6,7 +6,7 @@ import {
   BaseComponentConfig,
   BaseComponentProps,
   Component,
-} from '@/types/formComponent';
+} from '@/types/form';
 import { TextCursorInputIcon } from 'lucide-react';
 
 // Props for text input component
@@ -59,26 +59,29 @@ const generateJSXCode = (component: Component<TextInputProps>): string => {
   const { label, helperText, required, placeholder, className } =
     component.props;
 
-  return `
-<div className="space-y-2">
-  <Label htmlFor="${component.name}">${label}${required ? ' *' : ''}</Label>
-  <Input
-    id="${component.name}"
-    name="${component.name}"
-    placeholder="${placeholder || ''}"
-    className="${className || ''}"
-    {...register("${component.name}", { required: ${required} })}
-  />
-  {helperText && <p className="text-sm text-muted-foreground">${helperText}</p>}
-  {errors.${component.name}?.message && (
-    <p className="text-sm text-destructive">{errors.${label}?.message as string}</p>
+  return `<FormField
+  control={form.control}
+  name="${component.name}"
+  render={({ field }) => (
+    <FormItem>
+      <FormLabel>${label}${required ? ' *' : ''}</FormLabel>
+      <FormControl>
+        <Input 
+          placeholder="${placeholder || ''}" 
+          className="${className || ''}"
+          {...field} 
+        />
+      </FormControl>
+      ${helperText ? `<FormDescription>${helperText}</FormDescription>` : ''}
+      <FormMessage />
+    </FormItem>
   )}
-</div>`;
+/>`;
 };
 
 // Generate import code
 const generateImportCode = () => {
-  return `import { Input } from "@/components/ui/input";\nimport { Label } from "@/components/ui/label";`;
+  return `import { Input } from "@/components/ui/input";`;
 };
 
 // Component configuration
@@ -94,6 +97,7 @@ const textInputConfig: BaseComponentConfig<TextInputProps> = {
     placeholder: 'Enter your name',
     className: '',
   },
+  properties: {},
   renderPropertiesEditor,
   generateSchemaCode,
   generateJSXCode,

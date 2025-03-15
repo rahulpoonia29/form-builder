@@ -2,7 +2,7 @@ import { FormBuilder } from './components/form-builder/form-builder';
 
 function App() {
   return (
-    <div className="min-h-screen bg-background">
+    <div className="bg-background min-h-screen">
       <FormBuilder />
     </div>
   );

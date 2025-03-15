@@ -15,6 +15,7 @@ export type BaseComponentConfig<TProps> = {
   component: React.FC<TProps>;
   icon: LucideIcon;
   defaultProps: Required<Partial<TProps>>;
+  properties: Record<string, unknown>;
   renderPropertiesEditor?: (
     props: TProps,
     onChange: (props: TProps) => void,

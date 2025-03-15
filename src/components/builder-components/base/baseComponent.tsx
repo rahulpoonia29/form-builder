@@ -1,6 +1,6 @@
 import { Label } from '@/components/ui/label';
 import { cn } from '@/lib/utils';
-import { BaseComponentProps } from '@/types/formComponent';
+import { BaseComponentProps } from '@/types/form';
 
 // Props for the component including base props
 export interface BaseComponentPropsType extends BaseComponentProps {
@@ -20,16 +20,18 @@ export default function BaseComponent({
       <div className="flex items-center gap-1">
         <Label className="text-sm">
           {label}
-          {required && <span className="text-destructive ml-1" aria-hidden="true">*</span>}
+          {required && (
+            <span className="text-destructive ml-1" aria-hidden="true">
+              *
+            </span>
+          )}
         </Label>
       </div>
       {children}
       {helperText && (
         <p className="text-muted-foreground text-xs">{helperText}</p>
       )}
-      {required && (
-        <span className="sr-only">(Required field)</span>
-      )}
+      {required && <span className="sr-only">(Required field)</span>}
     </div>
   );
 }

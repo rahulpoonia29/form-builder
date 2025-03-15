@@ -4,7 +4,7 @@ import { Separator } from '@/components/ui/separator';
 import { Switch } from '@/components/ui/switch';
 import { Textarea } from '@/components/ui/textarea';
 import { useFormBuilderStore } from '@/store/formBuilder';
-import { formComponentsRegistry } from '../builder-components';
+import formComponents from '../builder-components';
 
 // Component property input renderer
 export function PropertyInput({
@@ -37,7 +37,7 @@ export function PropertyInput({
           id={name}
           value={(value as string) || ''}
           onChange={(e) => onChange(e.target.value)}
-          rows={2}
+          rows={1}
         />
       )}
 
@@ -79,7 +79,7 @@ export default function PropertiesPanel() {
   if (!componentConfig) {
     console.error(
       `Component config not found for: ${selectedComponentData.name}`,
-      { selectedComponentData, registry: formComponentsRegistry },
+      { selectedComponentData, registry: formComponents },
     );
 
     return (
@@ -136,7 +136,10 @@ export default function PropertiesPanel() {
             const sanitized = (value as string)
               .replace(/[^\w]/g, '') // Remove non-alphanumeric characters
               .replace(/^\d/, ''); // Remove leading digit if present
-            updateComponentName(selectedComponentData.id, sanitized);
+            updateComponentName(
+              selectedComponentData.id,
+              sanitized.toLowerCase(),
+            );
           }}
         />
 

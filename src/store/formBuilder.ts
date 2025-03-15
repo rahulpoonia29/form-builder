@@ -1,4 +1,4 @@
-import { BaseComponentConfig, Component } from '@/types/formComponent';
+import { BaseComponentConfig, Component } from '@/types/form';
 import { nanoid } from 'nanoid';
 import { create } from 'zustand';
 
@@ -23,9 +23,12 @@ export const useFormBuilderStore = create<FormBuilderState>((set) => ({
   addComponent: (config) => {
     if (!config) return;
 
+    const id = nanoid();
+    const suffix = id.replace(/[^a-zA-Z0-9]/g, '').substring(0, 3);
+
     const newComponent = {
-      id: nanoid(),
-      name: `${config.name.toLowerCase()}_${nanoid(3)}`,
+      id,
+      name: `${config.name.toLowerCase()}_${suffix}`,
       component: config.component,
       props: config.defaultProps,
       config,

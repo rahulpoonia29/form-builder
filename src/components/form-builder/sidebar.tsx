@@ -6,10 +6,10 @@ import {
   TooltipTrigger,
 } from '@/components/ui/tooltip';
 import { useFormBuilderStore } from '@/store/formBuilder';
-import { BaseComponentConfig } from '@/types/formComponent';
+import { BaseComponentConfig } from '@/types/form';
 import { ChevronDown, ChevronRight, PlusCircle } from 'lucide-react';
 import { useState } from 'react';
-import { formComponentsRegistry } from '../builder-components';
+import formComponents from '../builder-components';
 
 // Component for a collapsible category
 const ComponentCategory = ({
@@ -17,7 +17,7 @@ const ComponentCategory = ({
 }: {
   category: {
     name: string;
-    components: (typeof formComponentsRegistry)[0]['components'];
+    components: (typeof formComponents)[0]['components'];
   };
 }) => {
   const [isOpen, setIsOpen] = useState(true);
@@ -110,7 +110,7 @@ export const FormBuilderSidebar = () => {
       </div>
 
       <div className="flex-1 overflow-y-auto p-3">
-        {formComponentsRegistry.map((category) => (
+        {formComponents.map((category) => (
           <ComponentCategory key={category.name} category={category} />
         ))}
       </div>

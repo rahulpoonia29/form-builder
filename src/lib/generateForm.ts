@@ -1,4 +1,4 @@
-import { Component } from '@/types/formComponent';
+import { Component } from '@/types/form';
 
 export function generateFormCode(components: Component[]): string {
   if (components.length === 0) {
@@ -19,16 +19,30 @@ export function generateFormCode(components: Component[]): string {
     .map((c) => c.config.generateJSXCode(c))
     .join('\n\n')
     .split('\n')
-    .map((line) => `        ${line}`) // Add consistent indentation
+    .map((line) => `      ${line}`) // Add consistent indentation
     .join('\n');
 
-  return `import { zodResolver } from "@hookform/resolvers/zod";
+  return `"use client"
+
+import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { Button } from "@/components/ui/button";
-import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
-import { formSchema } from "./schema";
+import { 
+  Form, 
+  FormControl, 
+  FormDescription, 
+  FormField, 
+  FormItem, 
+  FormLabel, 
+  FormMessage 
+} from "@/components/ui/form";
 ${imports}
+
+// Define form schema
+const formSchema = z.object({
+  // Schema will be populated based on your form fields
+});
 
 export function ExampleForm() {
   const form = useForm<z.infer<typeof formSchema>>({
@@ -43,7 +57,7 @@ export function ExampleForm() {
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
 ${formJSX}
         
         <Button type="submit">Submit</Button>
