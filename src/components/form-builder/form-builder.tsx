@@ -13,6 +13,7 @@ import { FormBuilderCanvas } from './canvas';
 import { Header } from './header';
 import PropertiesPanel from './properties';
 import { FormBuilderSidebar } from './sidebar';
+import { ScrollArea } from '../ui/scroll-area';
 
 export function FormBuilder() {
   const { components, reorderComponents, reset } = useFormBuilderStore();
@@ -56,13 +57,15 @@ export function FormBuilder() {
 
           {/* Canvas and Properties Panel */}
           <div className="flex flex-1 overflow-hidden">
-            <SortableContext items={components.map((c) => c.id)}>
-              <div className="flex-1 overflow-hidden">
-                <FormBuilderCanvas />
-              </div>
-            </SortableContext>
+            <ScrollArea className="flex-1 overflow-hidden">
+              <SortableContext items={components.map((c) => c.id)}>
+                <div className="flex-1 overflow-hidden">
+                  <FormBuilderCanvas />
+                </div>
+              </SortableContext>
+            </ScrollArea>
 
-            <div className="bg-muted/20 w-96 border-l">
+            <div className="bg-muted/20 w-[450px] border-l">
               <div className="flex items-center border-b px-4 py-3">
                 <Sliders size={16} className="mr-2" />
                 <h3 className="font-medium">Properties</h3>

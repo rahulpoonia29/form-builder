@@ -9,7 +9,7 @@ interface HeaderProps {
 export function Header({ reset }: HeaderProps) {
   return (
     <>
-      <header className="bg-background border-b p-4">
+      <header className="bg-background border-b px-4 py-3">
         <div className="flex items-center justify-between">
           <h1 className="text-xl font-semibold">Form Builder</h1>
 

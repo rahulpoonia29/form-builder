@@ -101,11 +101,11 @@ const ComponentItem = ({
 // Updated Sidebar Component
 export const FormBuilderSidebar = () => {
   return (
-    <div className="flex h-full w-68 flex-col overflow-hidden border-r select-none">
-      <div className="border-b px-4 py-4 pb-3">
+    <div className="flex h-full w-58 flex-col overflow-hidden border-r select-none">
+      <div className="border-b px-3 pt-3 pb-2 text-center">
         <h2 className="text-lg font-semibold">Components</h2>
-        <p className="text-muted-foreground mt-1 text-sm">
-          Add components to your form
+        <p className="text-muted-foreground text-sm mt-2">
+          Add components to build your form
         </p>
       </div>
 
