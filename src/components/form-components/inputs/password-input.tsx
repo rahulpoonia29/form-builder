@@ -1,6 +1,15 @@
-import BaseComponent from '@/components/form-components/base/baseComponent';
 import { PropertyInput } from '@/components/form-builder/properties';
+import BaseComponent from '@/components/form-components/base/baseComponent';
 import { Input } from '@/components/ui/input';
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectLabel,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
 import { cn } from '@/lib/utils';
 import {
   BaseComponentConfig,
@@ -59,23 +68,31 @@ const renderPropertiesEditor = (
         <label htmlFor="validationLevel" className="text-sm font-medium">
           Password Validation Level
         </label>
-        <select
-          id="validationLevel"
-          className="border-input w-full rounded-md border px-3 py-2 text-sm"
+        <Select
           value={customOptions.validationLevel}
-          onChange={(e) =>
+          onValueChange={(value) =>
             onCustomOptionsChange({
               ...customOptions,
-              validationLevel: e.target.value as 'none' | 'medium' | 'strict',
+              validationLevel: value as 'none' | 'medium' | 'strict',
             })
           }
         >
-          <option value="none">None (any input)</option>
-          <option value="medium">Medium (uppercase & lowercase)</option>
-          <option value="strict">
-            Strict (uppercase, lowercase & special character)
-          </option>
-        </select>
+          <SelectTrigger className="w-full">
+            <SelectValue placeholder="Select validation level" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectGroup>
+              <SelectLabel>Validation Level</SelectLabel>
+              <SelectItem value="none">None (any input)</SelectItem>
+              <SelectItem value="medium">
+                Medium (uppercase & lowercase)
+              </SelectItem>
+              <SelectItem value="strict">
+                Strict (uppercase, lowercase & special character)
+              </SelectItem>
+            </SelectGroup>
+          </SelectContent>
+        </Select>
       </div>
     </>
   );
