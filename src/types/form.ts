@@ -35,7 +35,7 @@ export interface FormComponentsCategory {
 export interface Component<TProps = BaseComponentProps> {
   id: string;
   name: string;
-  component: React.FC<unknown>;
+  component: React.FC<TProps>;
   props: TProps;
   config: BaseComponentConfig<TProps>;
 }

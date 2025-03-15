@@ -86,7 +86,7 @@ const generateImportCode = () => {
 
 // Component configuration
 const textInputConfig: BaseComponentConfig<TextInputProps> = {
-  name: 'textInput',
+  name: 'name',
   description: 'Simple text input field',
   component: TextInput,
   icon: TextCursorInputIcon,

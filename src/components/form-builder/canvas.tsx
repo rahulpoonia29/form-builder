@@ -32,7 +32,7 @@ const FormCanvasComponent = ({
 }: {
   id: string;
   name: string;
-  component: React.FC<unknown>;
+  component: React.FC<BaseComponentProps>;
   props: BaseComponentProps;
 }) => {
   const { selectedComponent, setSelectedComponent, removeComponent } =
