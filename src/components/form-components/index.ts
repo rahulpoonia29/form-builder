@@ -14,6 +14,7 @@ const componentCategories: FormComponentsCategory[] = [
       () => import('./inputs/number-input').then((m) => m.default),
       () => import('./inputs/phone-input').then((m) => m.default),
       () => import('./inputs/textarea-input').then((m) => m.default),
+      () => import('./inputs/otp-input').then((m) => m.default),
     ],
   },
   {
