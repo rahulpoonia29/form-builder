@@ -26,6 +26,8 @@ interface PasswordInputProps extends BaseComponentProps {
 // Custom options for password validation
 interface PasswordInputCustomOptions {
   validationLevel: 'none' | 'medium' | 'strict';
+  minLength?: number;
+  maxLength?: number;
 }
 
 // The actual password input component
@@ -94,6 +96,34 @@ const renderPropertiesEditor = (
           </SelectContent>
         </Select>
       </div>
+
+      <div className="mt-4 grid grid-cols-2 gap-4">
+        <PropertyInput
+          label="Minimum Password Length"
+          name="minLength"
+          type="number"
+          value={customOptions.minLength}
+          onChange={(value) =>
+            onCustomOptionsChange({
+              ...customOptions,
+              minLength: Number(value),
+            })
+          }
+        />
+
+        <PropertyInput
+          label="Maximum Password Length"
+          name="maxLength"
+          type="number"
+          value={customOptions.maxLength}
+          onChange={(value) =>
+            onCustomOptionsChange({
+              ...customOptions,
+              maxLength: Number(value),
+            })
+          }
+        />
+      </div>
     </>
   );
 };
@@ -103,15 +133,26 @@ const generateSchemaCode = (
   component: Component<PasswordInputProps, PasswordInputCustomOptions>,
 ): string => {
   const { required, label } = component.props;
-  const { validationLevel } = component.config.customOptions;
+  const { validationLevel, minLength, maxLength } =
+    component.config.customOptions;
 
   let validationCode = '';
+  const minLengthCheck =
+    minLength !== undefined
+      ? `.min(${minLength}, { message: "${label || 'Password'} must be at least ${minLength} characters" })`
+      : '';
+  const maxLengthCheck =
+    maxLength !== undefined
+      ? `.max(${maxLength}, { message: "${label || 'Password'} must not exceed ${maxLength} characters" })`
+      : '';
 
   switch (validationLevel) {
     case 'none':
-      validationCode = required
-        ? `${component.name}: z.string().min(1, { message: "${label || 'Password'} is required" }),`
-        : `${component.name}: z.string().optional(),`;
+      validationCode = `${component.name}: z.string()${
+        required
+          ? '.min(1, { message: "' + (label || 'Password') + ' is required" })'
+          : ''
+      }${minLengthCheck}${maxLengthCheck}${!required ? '.optional()' : ''},`;
       break;
 
     case 'medium':
@@ -119,7 +160,7 @@ const generateSchemaCode = (
         ${required ? '.min(1, { message: "' + (label || 'Password') + ' is required" })' : ''}
         .regex(/(?=.*[a-z])(?=.*[A-Z])/, { 
           message: "${label || 'Password'} must contain at least one uppercase and one lowercase letter" 
-        })${!required ? '.optional()' : ''},`;
+        })${minLengthCheck}${maxLengthCheck}${!required ? '.optional()' : ''},`;
       break;
 
     case 'strict':
@@ -127,7 +168,7 @@ const generateSchemaCode = (
         ${required ? '.min(1, { message: "' + (label || 'Password') + ' is required" })' : ''}
         .regex(/(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*])/, { 
           message: "${label || 'Password'} must contain uppercase, lowercase, and special characters" 
-        })${!required ? '.optional()' : ''},`;
+        })${minLengthCheck}${maxLengthCheck}${!required ? '.optional()' : ''},`;
       break;
   }
 
@@ -185,6 +226,7 @@ const passwordInputConfig: BaseComponentConfig<
   },
   customOptions: {
     validationLevel: 'none',
+    minLength: undefined,
   },
   renderPropertiesEditor,
   generateSchemaCode,
