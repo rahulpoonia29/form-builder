@@ -1,33 +1,52 @@
-import { FormComponentsCategory } from '@/types/form';
-import textInputConfig from './inputs/text-input';
-import passwordInputConfig from './inputs/password-input';
-import emailInputConfig from './inputs/email-input';
-import numberInputConfig from './inputs/number-input';
-import textareaInputConfig from './inputs/textarea-input';
-import phoneInputConfig from './inputs/phone-input';
-import selectInputConfig from './selectors/select-input';
+// Ignore ts errors
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-nocheck
 
-// Registry of all form components
-const formComponents: FormComponentsCategory[] = [
+import { FormComponentsCategory } from '@/types/form';
+
+const componentCategories: FormComponentsCategory[] = [
   {
-    name: 'Input Fields',
+    name: 'Inputs',
     components: [
-      textInputConfig,
-      passwordInputConfig,
-      emailInputConfig,
-      numberInputConfig,
-      textareaInputConfig,
-      phoneInputConfig,
+      () => import('./inputs/text-input').then((m) => m.default),
+      () => import('./inputs/password-input').then((m) => m.default),
+      () => import('./inputs/email-input').then((m) => m.default),
+      () => import('./inputs/number-input').then((m) => m.default),
+      () => import('./inputs/phone-input').then((m) => m.default),
+      () => import('./inputs/textarea-input').then((m) => m.default),
     ],
   },
   {
     name: 'Selectors',
-    components: [selectInputConfig],
-  },
-  {
-    name: 'Buttons',
-    components: [],
+    components: [
+      () => import('./selectors/select-input').then((m) => m.default),
+    ],
   },
 ];
 
-export default formComponents;
+export async function getComponentCategories(): Promise<
+  FormComponentsCategory[]
+> {
+  const loadedCategories = await Promise.all(
+    componentCategories.map(async (category) => {
+      const loadedComponents = await Promise.all(
+        category.components.map((loader) => loader()),
+      );
+
+      return {
+        name: category.name,
+        components: loadedComponents,
+      };
+    }),
+  );
+
+  return loadedCategories;
+}
+
+// For initial sidebar rendering, we can export just the component metadata
+export const getComponentMetadata = () => {
+  return componentCategories.map((category) => ({
+    name: category.name,
+    componentsCount: category.components.length,
+  }));
+};

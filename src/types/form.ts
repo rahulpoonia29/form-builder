@@ -34,6 +34,12 @@ export interface FormComponentsCategory {
   components: BaseComponentConfig<any, any>[];
 }
 
+// Category metadata for initial loading without actual component implementations
+export interface FormComponentsCategoryMetadata {
+  name: string;
+  componentsCount: number;
+}
+
 // Component object used in the store
 export interface Component<
   TProps = BaseComponentProps,
