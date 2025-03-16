@@ -1,6 +1,7 @@
 import { BaseComponentConfig, Component } from '@/types/form';
 import { nanoid } from 'nanoid';
 import { create } from 'zustand';
+import { immer } from 'zustand/middleware/immer';
 
 interface FormBuilderState {
   components: Component[];
@@ -20,101 +21,107 @@ interface FormBuilderState {
   reset: () => void;
 }
 
-export const useFormBuilderStore = create<FormBuilderState>((set) => ({
-  components: [],
-  selectedComponent: null,
+// Use immer middleware for more efficient updates
+export const useFormBuilderStore = create<FormBuilderState>()(
+  immer((set) => ({
+    components: [],
+    selectedComponent: null,
 
-  addComponent: (config) => {
-    if (!config) return;
+    addComponent: (config) => {
+      if (!config) return;
 
-    const id = nanoid();
-    const suffix = id.replace(/[^a-zA-Z0-9]/g, '').substring(0, 3);
+      const id = nanoid();
+      const suffix = id.replace(/[^a-zA-Z0-9]/g, '').substring(0, 3);
 
-    const newComponent = {
-      id,
-      name: `${config.name.toLowerCase()}_${suffix}`,
-      component: config.component,
-      props: config.defaultProps,
-      config,
-    } as Component;
+      const newComponent = {
+        id,
+        name: `${config.name.toLowerCase()}_${suffix}`,
+        component: config.component,
+        props: config.defaultProps,
+        config,
+      } as Component;
 
-    set((state) => ({
-      components: [...state.components, newComponent],
-      selectedComponent: newComponent.id,
-    }));
-  },
+      set((state) => {
+        state.components.push(newComponent);
+        state.selectedComponent = newComponent.id;
+      });
+    },
 
-  removeComponent: (id) => {
-    set((state) => ({
-      components: state.components.filter((c) => c.id !== id),
-      selectedComponent:
-        state.selectedComponent === id ? null : state.selectedComponent,
-    }));
-  },
+    removeComponent: (id) => {
+      set((state) => {
+        state.components = state.components.filter((c) => c.id !== id);
+        if (state.selectedComponent === id) {
+          state.selectedComponent = null;
+        }
+      });
+    },
 
-  updateComponentName: (id, name) => {
-    set((state) => ({
-      components: state.components.map((c) =>
-        c.id === id ? { ...c, name } : c,
-      ),
-    }));
-  },
+    updateComponentName: (id, name) => {
+      set((state) => {
+        const component = state.components.find((c) => c.id === id);
+        if (component) {
+          component.name = name;
+        }
+      });
+    },
 
-  updateComponentProps: (id, props) => {
-    set((state) => ({
-      components: state.components.map((c) =>
-        c.id === id ? { ...c, props: { ...c.props, ...props } } : c,
-      ),
-    }));
-  },
+    updateComponentProps: (id, props) => {
+      set((state) => {
+        const component = state.components.find((c) => c.id === id);
+        if (component) {
+          component.props = { ...component.props, ...props };
+        }
+      });
+    },
 
-  // Add this function to your formBuilder store
-  updateComponentCustomOptions: (
-    id: string,
-    customOptions: Record<string, unknown>,
-  ) => {
-    set((state) => ({
-      components: state.components.map((component) => {
-        if (component.id === id) {
-          return {
-            ...component,
-            config: {
-              ...component.config,
-              customOptions: {
-                ...component.config.customOptions,
-                ...customOptions,
-              },
-            },
+    updateComponentCustomOptions: (id, customOptions) => {
+      set((state) => {
+        const component = state.components.find((c) => c.id === id);
+        if (component) {
+          component.config.customOptions = {
+            ...component.config.customOptions,
+            ...customOptions,
           };
         }
-        return component;
-      }),
-    }));
-  },
+      });
+    },
 
-  setSelectedComponent: (id) => {
-    set({ selectedComponent: id });
-  },
+    setSelectedComponent: (id) => {
+      set((state) => {
+        state.selectedComponent = id;
+      });
+    },
 
-  reorderComponents: (activeId, overId) => {
-    set((state) => {
-      const oldIndex = state.components.findIndex((c) => c.id === activeId);
-      const newIndex = state.components.findIndex((c) => c.id === overId);
+    reorderComponents: (activeId, overId) => {
+      set((state) => {
+        const oldIndex = state.components.findIndex((c) => c.id === activeId);
+        const newIndex = state.components.findIndex((c) => c.id === overId);
 
-      if (oldIndex === -1 || newIndex === -1) return state;
+        if (oldIndex === -1 || newIndex === -1) return;
 
-      const newComponents = [...state.components];
-      const [movedComponent] = newComponents.splice(oldIndex, 1);
-      newComponents.splice(newIndex, 0, movedComponent);
+        const movedComponent = state.components[oldIndex];
+        state.components.splice(oldIndex, 1);
+        state.components.splice(newIndex, 0, movedComponent);
+      });
+    },
 
-      return { components: newComponents };
-    });
-  },
+    reset: () => {
+      set((state) => {
+        state.components = [];
+        state.selectedComponent = null;
+      });
+    },
+  })),
+);
 
-  reset: () => {
-    set({
-      components: [],
-      selectedComponent: null,
-    });
-  },
-}));
+// Create memoized selectors to prevent unnecessary re-renders
+export const useSelectedComponent = () =>
+  useFormBuilderStore((state) => {
+    const selectedId = state.selectedComponent;
+    return selectedId
+      ? state.components.find((c) => c.id === selectedId)
+      : null;
+  });
+
+export const useComponentIds = () =>
+  useFormBuilderStore((state) => state.components.map((c) => c.id));
