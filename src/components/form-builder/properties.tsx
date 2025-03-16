@@ -16,7 +16,7 @@ export function PropertyInput({
 }: {
   name: string;
   label: string;
-  type: 'text' | 'textarea' | 'boolean';
+  type: 'text' | 'textarea' | 'boolean' | 'number';
   value: unknown;
   onChange: (value: unknown) => void;
 }) {
@@ -46,6 +46,15 @@ export function PropertyInput({
           id={name}
           checked={(value as boolean) || false}
           onCheckedChange={onChange}
+        />
+      )}
+
+      {type === 'number' && (
+        <Input
+          id={name}
+          type="number"
+          value={(value as number) || 0}
+          onChange={(e) => onChange(Number(e.target.value))}
         />
       )}
     </div>
