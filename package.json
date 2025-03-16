@@ -1,7 +1,14 @@
 {
   "name": "form-builder",
-  "private": true,
-  "version": "0.2.0",
+  "version": "0.5.0",
+  "description": "A drag-and-drop form builder with built-in validation and schema generation using React, TypeScript, Zustand, and Zod.",
+  "author": "Rahul",
+  "license": "MIT",
+  "homepage": "https://form-builder.rahulpoonia.co/",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/rahulpoonia29/form-builder"
+  },
   "type": "module",
   "scripts": {
     "dev": "vite",
