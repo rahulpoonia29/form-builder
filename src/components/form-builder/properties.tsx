@@ -4,7 +4,6 @@ import { Separator } from '@/components/ui/separator';
 import { Switch } from '@/components/ui/switch';
 import { Textarea } from '@/components/ui/textarea';
 import { useFormBuilderStore } from '@/store/formBuilder';
-import formComponents from '../form-components';
 
 // Component property input renderer
 export function PropertyInput({
@@ -89,7 +88,7 @@ export default function PropertiesPanel() {
   if (!componentConfig) {
     console.error(
       `Component config not found for: ${selectedComponentData.name}`,
-      { selectedComponentData, registry: formComponents },
+      { selectedComponentData },
     );
 
     return (
