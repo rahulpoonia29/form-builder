@@ -4,6 +4,7 @@ import passwordInputConfig from './inputs/password-input';
 import emailInputConfig from './inputs/email-input';
 import numberInputConfig from './inputs/number-input';
 import textareaInputConfig from './inputs/textarea-input';
+import phoneInputConfig from './inputs/phone-input';
 import selectInputConfig from './selectors/select-input';
 
 // Registry of all form components
@@ -16,6 +17,7 @@ const formComponents: FormComponentsCategory[] = [
       emailInputConfig,
       numberInputConfig,
       textareaInputConfig,
+      phoneInputConfig,
     ],
   },
   {
