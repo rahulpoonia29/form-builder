@@ -7,16 +7,24 @@ import {
   useSensor,
   useSensors,
 } from '@dnd-kit/core';
-import { SortableContext } from '@dnd-kit/sortable';
 import { Sliders } from 'lucide-react';
+import { memo } from 'react';
+import { ScrollArea } from '../ui/scroll-area';
 import { FormBuilderCanvas } from './canvas';
 import { Header } from './header';
 import PropertiesPanel from './properties';
 import { FormBuilderSidebar } from './sidebar';
-import { ScrollArea } from '../ui/scroll-area';
+
+// Use memo to prevent unnecessary re-renders of static components
+const MemoizedHeader = memo(({ reset }: { reset: () => void }) => (
+  <Header reset={reset} />
+));
+
+const MemoizedSidebar = memo(FormBuilderSidebar);
+const MemoizedPropertiesPanel = memo(PropertiesPanel);
 
 export function FormBuilder() {
-  const { components, reorderComponents, reset } = useFormBuilderStore();
+  const { reorderComponents, reset } = useFormBuilderStore();
 
   const sensors = useSensors(
     useSensor(MouseSensor, {
@@ -45,33 +53,28 @@ export function FormBuilder() {
 
   return (
     <DndContext sensors={sensors} onDragEnd={handleDragEnd}>
-      {/* Pass the active drag state to the canvas component */}
       <div className="flex h-screen w-full overflow-hidden font-mono">
-        {/* Sidebar on the left */}
-        <FormBuilderSidebar />
+        {/* Sidebar with memoization */}
+        <MemoizedSidebar />
 
         {/* Main Content Area */}
         <div className="flex flex-1 flex-col">
           {/* Header at the top */}
-          <Header reset={reset} />
+          <MemoizedHeader reset={reset} />
 
           {/* Canvas and Properties Panel */}
           <div className="flex flex-1 overflow-hidden">
             <ScrollArea className="flex-1 overflow-hidden">
-              <SortableContext items={components.map((c) => c.id)}>
-                <div className="flex-1 overflow-hidden">
-                  <FormBuilderCanvas />
-                </div>
-              </SortableContext>
+              <FormBuilderCanvas />
             </ScrollArea>
 
-            <div className="bg-muted/20 w-[400px]  border-l">
+            <div className="bg-muted/20 w-[400px] border-l">
               <div className="flex items-center border-b px-4 py-3">
                 <Sliders size={16} className="mr-2" />
                 <h3 className="font-medium">Properties</h3>
               </div>
               <div className="h-[calc(100vh-152px)]">
-                <PropertiesPanel />
+                <MemoizedPropertiesPanel />
               </div>
             </div>
           </div>
