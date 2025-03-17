@@ -205,16 +205,17 @@ export default function PropertiesPanel() {
 
             <div className="space-y-4">
               {/* Custom component properties */}
-              {componentConfig.renderPropertiesEditor(
-                selectedComponentData.props,
-                (props) =>
-                  updateComponentProps(
-                    selectedComponentData.id,
-                    props as Partial<typeof selectedComponentData.props>,
-                  ),
-                selectedComponentData.config.customOptions,
-                updateCustomOptions,
-              )}
+              {componentConfig.renderPropertiesEditor &&
+                componentConfig.renderPropertiesEditor(
+                  selectedComponentData.props,
+                  (props) =>
+                    updateComponentProps(
+                      selectedComponentData.id,
+                      props as Partial<typeof selectedComponentData.props>,
+                    ),
+                  selectedComponentData.config.customOptions,
+                  updateCustomOptions,
+                )}
             </div>
           </>
         )}

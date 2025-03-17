@@ -1,4 +1,3 @@
-import { Button } from '@/components/ui/button';
 import {
   Tooltip,
   TooltipContent,
@@ -7,7 +6,7 @@ import {
 } from '@/components/ui/tooltip';
 import { useFormBuilderStore } from '@/store/formBuilder';
 import { BaseComponentConfig, FormComponentsCategory } from '@/types/form';
-import { ChevronDown, ChevronRight, PlusCircle } from 'lucide-react';
+import { ChevronDown, ChevronRight } from 'lucide-react';
 import { memo, useCallback, useEffect, useState } from 'react';
 import {
   getComponentCategories,
@@ -70,36 +69,25 @@ const ComponentItem = memo(
     config: BaseComponentConfig<unknown, unknown>;
     onAdd: () => void;
   }) => {
-    const Icon = config.icon;
-
     return (
-      <div className="group hover:bg-accent hover:border-border flex items-center justify-between rounded-md border border-transparent px-3 py-2 transition-colors">
-        <div className="flex items-center gap-3">
-          <Icon className="text-primary size-4" />
-          <span className="text-sm">{config.name}</span>
-        </div>
-
-        <TooltipProvider delayDuration={0}>
-          <Tooltip>
-            <TooltipTrigger asChild>
-              <Button
-                size="icon"
-                variant="ghost"
-                className="h-6 w-6 cursor-pointer transition-opacity"
-                onClick={(e) => {
-                  e.stopPropagation();
-                  onAdd();
-                }}
-              >
-                <PlusCircle size={14} className="text-primary" />
-              </Button>
-            </TooltipTrigger>
-            <TooltipContent className="dark bg-secondary text-secondary-foreground px-2 py-1 text-xs">
-              Add {config.name}
-            </TooltipContent>
-          </Tooltip>
-        </TooltipProvider>
-      </div>
+      <TooltipProvider delayDuration={300}>
+        <Tooltip>
+          <TooltipTrigger asChild>
+            <div
+              className="hover:bg-accent hover:border-border flex cursor-pointer items-center gap-2 rounded-md border border-transparent px-3 py-2 ps-4 text-sm capitalize transition-colors"
+              onClick={onAdd}
+            >
+              {config.name}
+            </div>
+          </TooltipTrigger>
+          <TooltipContent
+            side="right"
+            className="dark bg-secondary text-secondary-foreground px-2 py-1 text-xs"
+          >
+            Add {config.name} component
+          </TooltipContent>
+        </Tooltip>
+      </TooltipProvider>
     );
   },
 );
@@ -136,12 +124,9 @@ export const FormBuilderSidebar = () => {
   }, []);
 
   return (
-    <div className="flex h-full w-58 flex-col overflow-hidden border-r select-none">
-      <div className="border-b px-3 pt-3 pb-2 text-center">
-        <h2 className="text-lg font-semibold">Components</h2>
-        <p className="text-muted-foreground mt-2 text-sm">
-          Add components to build your form
-        </p>
+    <div className="flex h-full w-48 flex-col overflow-hidden border-r select-none">
+      <div className="border-b px-3 py-4 text-center">
+        <h2 className="text-xl font-semibold">Components</h2>
       </div>
 
       <div className="flex-1 overflow-y-auto p-3">

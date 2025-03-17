@@ -1,5 +1,5 @@
-import BaseComponent from '@/components/form-components/base/baseComponent';
 import { PropertyInput } from '@/components/form-builder/properties';
+import BaseComponent from '@/components/form-components/base/baseComponent';
 import { Input } from '@/components/ui/input';
 import { cn } from '@/lib/utils';
 import {
@@ -7,7 +7,6 @@ import {
   BaseComponentProps,
   Component,
 } from '@/types/form';
-import { AtSignIcon } from 'lucide-react';
 
 // Props for email input component
 interface EmailInputProps extends BaseComponentProps {
@@ -161,7 +160,6 @@ const emailInputConfig: BaseComponentConfig<
   name: 'email',
   description: 'Email input field with validation',
   component: EmailInput,
-  icon: AtSignIcon,
   defaultProps: {
     label: 'Email',
     required: true,

@@ -1,5 +1,5 @@
-import BaseComponent from '@/components/form-components/base/baseComponent';
 import { PropertyInput } from '@/components/form-builder/properties';
+import BaseComponent from '@/components/form-components/base/baseComponent';
 import { Input } from '@/components/ui/input';
 import { cn } from '@/lib/utils';
 import {
@@ -7,7 +7,6 @@ import {
   BaseComponentProps,
   Component,
 } from '@/types/form';
-import { HashIcon } from 'lucide-react';
 
 // Props for number input component
 interface NumberInputProps extends BaseComponentProps {
@@ -192,7 +191,6 @@ const numberInputConfig: BaseComponentConfig<
   name: 'number',
   description: 'Number input field with min/max validation',
   component: NumberInput,
-  icon: HashIcon,
   defaultProps: {
     label: 'Number',
     required: false,

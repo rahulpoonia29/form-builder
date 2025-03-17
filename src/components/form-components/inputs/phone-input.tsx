@@ -1,13 +1,6 @@
-import BaseComponent from '@/components/form-components/base/baseComponent';
 import { PropertyInput } from '@/components/form-builder/properties';
+import BaseComponent from '@/components/form-components/base/baseComponent';
 import { Input } from '@/components/ui/input';
-import { cn } from '@/lib/utils';
-import {
-  BaseComponentConfig,
-  BaseComponentProps,
-  Component,
-} from '@/types/form';
-import { PhoneIcon } from 'lucide-react';
 import {
   Select,
   SelectContent,
@@ -17,6 +10,12 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
+import { cn } from '@/lib/utils';
+import {
+  BaseComponentConfig,
+  BaseComponentProps,
+  Component,
+} from '@/types/form';
 
 // Props for phone input component
 interface PhoneInputProps extends BaseComponentProps {
@@ -203,7 +202,6 @@ const phoneInputConfig: BaseComponentConfig<
   name: 'phone',
   description: 'Phone number input with format validation',
   component: PhoneInput,
-  icon: PhoneIcon,
   defaultProps: {
     label: 'Phone Number',
     required: false,

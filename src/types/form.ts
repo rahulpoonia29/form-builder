@@ -1,5 +1,3 @@
-import { LucideIcon } from 'lucide-react';
-
 // Base properties that all components will have
 export interface BaseComponentProps {
   label: string;
@@ -13,10 +11,9 @@ export type BaseComponentConfig<TProps, TCustomOptions> = {
   name: string;
   description?: string;
   component: React.FC<TProps>;
-  icon: LucideIcon;
   defaultProps: Required<Partial<TProps>>;
   customOptions: TCustomOptions; // Configuration options that don't affect rendering or used in props but affect code generation
-  renderPropertiesEditor: (
+  renderPropertiesEditor?: (
     props: TProps,
     onChange: (props: TProps) => void,
     customOptions: TCustomOptions,

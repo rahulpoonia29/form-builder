@@ -21,6 +21,9 @@ const componentCategories: FormComponentsCategory[] = [
     name: 'Selectors',
     components: [
       () => import('./selectors/select-input').then((m) => m.default),
+      () => import('./selectors/checkbox-input').then((m) => m.default),
+      // () => import('./selectors/radio-input').then((m) => m.default),
+      // () => import('./selectors/switch-input').then((m) => m.default),
     ],
   },
 ];

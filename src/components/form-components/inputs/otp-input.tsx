@@ -12,7 +12,6 @@ import {
   BaseComponentProps,
   Component,
 } from '@/types/form';
-import { LockIcon } from 'lucide-react';
 import React from 'react';
 
 interface OTPInputProps extends BaseComponentProps {
@@ -188,7 +187,6 @@ const OTPInputConfig: BaseComponentConfig<
   name: 'otp',
   description: 'One-time password input field',
   component: OTPInput,
-  icon: LockIcon,
   defaultProps: {
     label: 'OTP Code',
     required: true,

@@ -16,7 +16,6 @@ import {
   BaseComponentProps,
   Component,
 } from '@/types/form';
-import { KeyIcon } from 'lucide-react';
 
 // Props for password input component
 interface PasswordInputProps extends BaseComponentProps {
@@ -216,7 +215,6 @@ const passwordInputConfig: BaseComponentConfig<
   name: 'password',
   description: 'Password input field with validation options',
   component: PasswordInput,
-  icon: KeyIcon,
   defaultProps: {
     label: 'Password',
     required: true,

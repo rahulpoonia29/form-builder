@@ -1,5 +1,7 @@
-import BaseComponent from '@/components/form-components/base/baseComponent';
 import { PropertyInput } from '@/components/form-builder/properties';
+import BaseComponent from '@/components/form-components/base/baseComponent';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
 import {
   Select,
   SelectContent,
@@ -13,9 +15,7 @@ import {
   BaseComponentProps,
   Component,
 } from '@/types/form';
-import { ChevronDownIcon, CircleX } from 'lucide-react';
-import { Input } from '@/components/ui/input';
-import { Button } from '@/components/ui/button';
+import { CircleX } from 'lucide-react';
 
 // Props for select input component
 interface SelectInputProps extends BaseComponentProps {
@@ -117,7 +117,7 @@ const renderPropertiesEditor = (
               <Button
                 variant={'outline'}
                 size={'icon'}
-                className='hover:bg-destructive hover:text-primary-foreground cursor-pointer transition-colors'
+                className="hover:bg-destructive hover:text-primary-foreground cursor-pointer transition-colors"
                 onClick={() => {
                   const newOptions = customOptions.options.filter(
                     (_, i) => i !== index,
@@ -231,7 +231,6 @@ const selectInputConfig: BaseComponentConfig<
   name: 'select',
   description: 'Dropdown select field',
   component: SelectInput,
-  icon: ChevronDownIcon,
   defaultProps: {
     label: 'Select Option',
     required: false,
@@ -241,9 +240,9 @@ const selectInputConfig: BaseComponentConfig<
   },
   customOptions: {
     options: [
-      { label: 'Option 1', value: 'option1' },
-      { label: 'Option 2', value: 'option2' },
-      { label: 'Option 3', value: 'option3' },
+      { label: 'United States', value: 'us' },
+      { label: 'Canada', value: 'ca' },
+      { label: 'United Kingdom', value: 'uk' },
     ],
   },
   renderPropertiesEditor,

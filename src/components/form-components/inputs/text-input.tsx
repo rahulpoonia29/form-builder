@@ -7,7 +7,6 @@ import {
   BaseComponentProps,
   Component,
 } from '@/types/form';
-import { TextCursorInputIcon } from 'lucide-react';
 
 // Props for text input component
 interface TextInputProps extends BaseComponentProps {
@@ -166,7 +165,6 @@ const textInputConfig: BaseComponentConfig<
   name: 'name',
   description: 'Simple text input field',
   component: TextInput,
-  icon: TextCursorInputIcon,
   defaultProps: {
     label: 'Name',
     required: false,

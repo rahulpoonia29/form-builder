@@ -1,5 +1,5 @@
-import BaseComponent from '@/components/form-components/base/baseComponent';
 import { PropertyInput } from '@/components/form-builder/properties';
+import BaseComponent from '@/components/form-components/base/baseComponent';
 import { Textarea } from '@/components/ui/textarea';
 import { cn } from '@/lib/utils';
 import {
@@ -7,7 +7,6 @@ import {
   BaseComponentProps,
   Component,
 } from '@/types/form';
-import { AlignJustifyIcon } from 'lucide-react';
 
 // Props for textarea component
 interface TextareaInputProps extends BaseComponentProps {
@@ -195,7 +194,6 @@ const textareaInputConfig: BaseComponentConfig<
   name: 'textarea',
   description: 'Multi-line text input field',
   component: TextareaInput,
-  icon: AlignJustifyIcon,
   defaultProps: {
     label: 'Description',
     required: false,
